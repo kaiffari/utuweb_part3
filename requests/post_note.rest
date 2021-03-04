@@ -1,0 +1,8 @@
+POST http://localhost:3001/notes
+content-type: application/json
+
+{
+    "content": "VS Coden REST feilaa",
+    "date": "6.3.2021 17:00",
+    "important": true
+}
