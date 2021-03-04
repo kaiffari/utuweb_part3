@@ -25,6 +25,16 @@ let notes = [
 
   app.use(bodyParser.json())
 
+  const logger = (request, response, next) => {
+    console.log('Method:',request.method)
+    console.log('Path: ', request.path)
+    console.log('Body: ', request.body)
+    console.log('---')
+    next()
+    }
+
+  app.use(logger)
+
   const generateId = () => {
     const maxId = notes.length > 0 ? notes.map(n => n.id).sort((a,b) => a - b).reverse()[0] : 1
     return maxId + 1
@@ -74,7 +84,13 @@ let notes = [
     notes = notes.filter(note => note.id !== id)
     response.status(204).end()
   })
-        
+
+  const error = (request, response) => {
+    response.status(404).send({error: 'unknown endpoint'})
+  }
+
+  app.use(error)
+
   const PORT = 3001
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
